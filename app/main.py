@@ -4,10 +4,12 @@ import copy
 import math
 import os
 
-SNAKE_BUFFER = 1
+SNAKE_BUFFER = 0
 SNAKE = 1
 FOOD = 2
 SAFETY = 3
+
+MOD = 1
 
 
 def direction(from_cell, to_cell):
@@ -74,19 +76,13 @@ def populatesafety(data, mysnake, grid):
     return grid
 
 
-def getpath(data):
-    mysnake, grid = populatesnake_grid(data)
-    grid = populatesafety(data, mysnake, grid)
-
+def foodpath(data, grid, mysnake):
     snek_head = mysnake['coords'][0]
     snek_coords = mysnake['coords']
-
     path = None
-    middle = [data['width'] / 2, data['height'] / 2]
     foods = sorted(data['food'], key=lambda p: distance(p, snek_head))
-
     for food in foods:
-        #Safe path for food
+        # Safe path for food
         tentative_path = a_star(snek_head, food, grid, snek_coords)
         if not tentative_path:
             # print "no path to food"
@@ -95,7 +91,7 @@ def getpath(data):
         path_length = len(tentative_path)
         snek_length = len(snek_coords) + 1
 
-        #Avoid snakes near food
+        # Avoid snakes near food
         dead = False
         for enemy in data['snakes']:
             if enemy['id'] == data['you']:
@@ -133,9 +129,21 @@ def getpath(data):
             path = tentative_path
             break
             # print "no path to tail from food"
+    return path
 
+
+def getpath(data):
+    mysnake, grid = populatesnake_grid(data)
+    grid = populatesafety(data, mysnake, grid)
+
+    snek_head = mysnake['coords'][0]
+    snek_coords = mysnake['coords']
+    middle = [data['width'] / 2, data['height'] / 2]
+
+    path = foodpath(data,grid,mysnake)
+    # Go around following yourself
     if not path:
-        path = a_star(snek_head, mysnake['coords'][-1], grid, snek_coords)
+        path = a_star(snek_head, middle, grid, snek_coords)
 
     despair = not (path and len(path) > 1)
 
@@ -157,6 +165,7 @@ def getpath(data):
         assert path[0] == tuple(snek_head)
         assert len(path) > 1
     return path
+
 
 # region API Calls
 
