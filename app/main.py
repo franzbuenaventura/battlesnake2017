@@ -63,7 +63,7 @@ def populatesafety(data, mysnake, grid):
             continue
         if distance(mysnake['coords'][0], enemy['coords'][0]) > SNAKE_BUFFER:
             continue
-        if len(enemy['coords']) > len(mysnake['coords']) - 1:
+        if len(enemy['coords']) >= len(mysnake['coords']):
             # dodge
             if enemy['coords'][0][1] < data['height'] - 1:
                 grid[enemy['coords'][0][0]][enemy['coords'][0][1] + 1] = SAFETY
@@ -140,11 +140,11 @@ def getpath(data):
     snek_head = mysnake['coords'][0]
     snek_coords = mysnake['coords']
     middle = [data['width'] / 2, data['height'] / 2]
-    if len(data['snakes']) >= 2:
-        if mysnake['health_points'] <= 80:
-            path = foodpath(data,grid,mysnake)
-    else:
-        path = foodpath(data,grid,mysnake)
+    # if len(data['snakes']) >= 2:
+    #     if mysnake['health_points'] <= 80:
+    #         path = foodpath(data,grid,mysnake)
+    # else:
+    path = foodpath(data,grid,mysnake)
 
     # Go around following yourself
     if not path:
