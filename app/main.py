@@ -139,7 +139,7 @@ def getpath(data):
     snek_head = mysnake['coords'][0]
     snek_coords = mysnake['coords']
     middle = [data['width'] / 2, data['height'] / 2]
-    if data['health_points'] <= 40:
+    if mysnake['health_points'] <= 40:
         path = foodpath(data,grid,mysnake)
     # Go around following yourself
     if not path:
