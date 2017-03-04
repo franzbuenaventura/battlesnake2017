@@ -136,6 +136,7 @@ def getpath(data):
     mysnake, grid = populatesnake_grid(data)
     grid = populatesafety(data, mysnake, grid)
 
+    path = None
     snek_head = mysnake['coords'][0]
     snek_coords = mysnake['coords']
     middle = [data['width'] / 2, data['height'] / 2]
