@@ -144,7 +144,7 @@ def getpath(data):
     #     if mysnake['health_points'] <= 80:
     #         path = foodpath(data,grid,mysnake)
     # else:
-    path = foodpath(data,grid,mysnake)
+    path = foodpath(data, grid, mysnake)
 
     # Go around following yourself
     if not path:
@@ -182,21 +182,16 @@ def static(path):
 @bottle.post('/start')
 def start():
     data = bottle.request.json
-    game_id = data['game_id']
-    board_width = data['width']
-    board_height = data['height']
-
-    # head_url = '%s://%s/static/head.png' % (
-    #    bottle.request.urlparts.scheme,
-    #    bottle.request.urlparts.netloc
-    # )
 
     return {
-        'color': '#00FF00',
-        'taunt': '{} ({}x{})'.format(game_id, board_width, board_height),
+        'color': '#c0392b',
+        "secondary_color": "#000000",
+        'taunt': 'pew pew',
         'head_url': 'http://vignette1.wikia.nocookie.net/scribblenauts/images/5/5b/Black_Mamba.png/revision/latest?cb'
                     '=20130321192320',
-        'name': 'Black Mamba'
+        'name': 'Black Mamba',
+        "head_type": "shades",
+        "tail_type": "fat-rattle"
     }
 
 
@@ -206,7 +201,7 @@ def move():
     path = getpath(data)
     return {
         'move': direction(path[0], path[1]),
-        'taunt': 'hiss hiss'
+        'taunt': 'hiss hiss, I\'m a snake',
     }
 
 
