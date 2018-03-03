@@ -8,7 +8,7 @@ SNAKE_BUFFER = 2
 SNAKE = 1
 FOOD = 2
 SAFETY = 3
-SNAKE_ID = "Ahasas"
+SNAKE_ID = "Ahas"
 
 def direction(from_cell, to_cell):
     dx = to_cell[0] - from_cell[0]
