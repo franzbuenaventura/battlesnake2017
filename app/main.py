@@ -4,11 +4,11 @@ import copy
 import math
 import os
 
-SNAKE_BUFFER = 0
+SNAKE_BUFFER = 2
 SNAKE = 1
 FOOD = 2
 SAFETY = 3
-SNAKE_ID = ""
+SNAKE_ID = "Ahasas"
 
 def direction(from_cell, to_cell):
     dx = to_cell[0] - from_cell[0]
@@ -60,13 +60,11 @@ def populatesnake_grid(data):
 
     grid = [[0 for col in xrange(data['height'])] for row in xrange(data['width'])]
     for snek in data['snakes']['data']:
-        if snek['name'] == "Ahas":
+        if snek['name'] == SNAKE_ID:
             mysnake = snek
         for coord in snek['body']['data']:
-            print (coord_converter(coord)[0])
             grid[coord_converter(coord)[0]][coord_converter(coord)[1]] = SNAKE
     for f in data['food']['data']:
-        print f;
         grid[coord_converter(f)[0]][coord_converter(f)[1]] = FOOD
     return mysnake, grid
 
@@ -75,9 +73,9 @@ def populatesnake_grid(data):
 # SNAKE_BUFFER number of blocks away from enemy head to user head
 def populatesafety(data, mysnake, grid):
     for enemy in data['snakes']['data']:
-        if enemy['name'] == "Ahas":
+        if enemy['name'] == SNAKE_ID:
             continue
-        if distance(coord_converter(mysnake['body']['data'])[0], coord_converter(enemy['body']['data'])[0]) > SNAKE_BUFFER:
+        if distance(coord_converter(mysnake['body']['data'][0]), coord_converter(enemy['body']['data'][0])) > SNAKE_BUFFER:
             continue
         if len(enemy['body']['data']) >= len(mysnake['body']['data']):
             # dodge
@@ -110,7 +108,7 @@ def foodpath(data, grid, mysnake):
         # Avoid snakes near food
         dead = False
         for enemy in data['snakes']['data']:
-            if enemy['name'] == "Ahas":
+            if enemy['name'] == SNAKE_ID:
                 continue
             if path_length > distance(coord_converter(enemy['body']['data'][0]), food):
                 dead = True
@@ -198,7 +196,6 @@ def static(path):
 @bottle.post('/start')
 def start():
     data = bottle.request.json
-
     return {
         'color': '#c0392b',
         "secondary_color": "#000000",
