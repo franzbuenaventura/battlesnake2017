@@ -8,9 +8,7 @@ SNAKE_BUFFER = 0
 SNAKE = 1
 FOOD = 2
 SAFETY = 3
-
-MOD = 1
-
+SNAKE_ID = ""
 
 def direction(from_cell, to_cell):
     dx = to_cell[0] - from_cell[0]
@@ -40,47 +38,65 @@ def closest(items, start):
 
     return closest_item
 
+def coord_converter(coord):
+    cords = [coord['x'], coord['y']]
+    return cords
+
+def coords_converter(coords):
+    cordList = []
+    i = 0
+    for cord in coords:
+        cordList.append([])
+        cordList[i].append(cord['x'])
+        cordList[i].append(cord['y'])
+        i += 1
+    return cordList
+
+
 
 # Setup Grid and map out the Snakes and Food
 # return: Snake and Grid
 def populatesnake_grid(data):
+
     grid = [[0 for col in xrange(data['height'])] for row in xrange(data['width'])]
-    for snek in data['snakes']:
-        if snek['id'] == data['you']:
+    for snek in data['snakes']['data']:
+        if snek['name'] == "ahas":
             mysnake = snek
-        for coord in snek['coords']:
-            grid[coord[0]][coord[1]] = SNAKE
-    for f in data['food']:
-        grid[f[0]][f[1]] = FOOD
+        for coord in snek['body']['data']:
+            print (coord_converter(coord)[0])
+            grid[coord_converter(coord)[0]][coord_converter(coord)[1]] = SNAKE
+    for f in data['food']['data']:
+        print f;
+        grid[coord_converter(f)[0]][coord_converter(f)[1]] = FOOD
     return mysnake, grid
 
 
 # Mark Safety in Grid
 # SNAKE_BUFFER number of blocks away from enemy head to user head
 def populatesafety(data, mysnake, grid):
-    for enemy in data['snakes']:
-        if enemy['id'] == data['you']:
+    for enemy in data['snakes']['data']:
+        if enemy['name'] == "ahas":
             continue
-        if distance(mysnake['coords'][0], enemy['coords'][0]) > SNAKE_BUFFER:
+        if distance(coord_converter(mysnake['body']['data'])[0], coord_converter(enemy['body']['data'])[0]) > SNAKE_BUFFER:
             continue
-        if len(enemy['coords']) >= len(mysnake['coords']):
+        if len(enemy['body']['data']) >= len(mysnake['body']['data']):
             # dodge
-            if enemy['coords'][0][1] < data['height'] - 1:
-                grid[enemy['coords'][0][0]][enemy['coords'][0][1] + 1] = SAFETY
-            if enemy['coords'][0][1] > 0:
-                grid[enemy['coords'][0][0]][enemy['coords'][0][1] - 1] = SAFETY
-            if enemy['coords'][0][0] < data['width'] - 1:
-                grid[enemy['coords'][0][0] + 1][enemy['coords'][0][1]] = SAFETY
-            if enemy['coords'][0][0] > 0:
-                grid[enemy['coords'][0][0] - 1][enemy['coords'][0][1]] = SAFETY
+            if coord_converter(enemy['body']['data'][0])[1] < data['height'] - 1:
+                grid[coord_converter(enemy['body']['data'][0])[0]][enemy['body']['data'][0][1] + 1] = SAFETY
+            if coord_converter(enemy['body']['data'][0])[1] > 0:
+                grid[coord_converter(enemy['body']['data'][0])[0]][coord_converter(enemy['body']['data'][0])[1] - 1] = SAFETY
+            if coord_converter(enemy['body']['data'][0])[0] < data['width'] - 1:
+                grid[coord_converter(enemy['body']['data'][0])[0] + 1][coord_converter(enemy['body']['data'][0])[1]] = SAFETY
+            if coord_converter(enemy['body']['data'][0])[0] > 0:
+                grid[coord_converter(enemy['body']['data'][0])[0] - 1][coord_converter(enemy['body']['data'][0])[1]] = SAFETY
     return grid
 
 
 def foodpath(data, grid, mysnake):
-    snek_head = mysnake['coords'][0]
-    snek_coords = mysnake['coords']
+    snek_head = coord_converter(mysnake['body']['data'][0])
+    snek_coords = coords_converter(mysnake['body']['data'])
     path = None
-    foods = sorted(data['food'], key=lambda p: distance(p, snek_head))
+    foods = sorted(coords_converter(data['food']['data']), key=lambda p: distance(p, snek_head))
     for food in foods:
         # Safe path for food
         tentative_path = a_star(snek_head, food, grid, snek_coords)
@@ -93,10 +109,10 @@ def foodpath(data, grid, mysnake):
 
         # Avoid snakes near food
         dead = False
-        for enemy in data['snakes']:
-            if enemy['id'] == data['you']:
+        for enemy in data['snakes']['data']:
+            if enemy['name'] == "ahas":
                 continue
-            if path_length > distance(enemy['coords'][0], food):
+            if path_length > distance(coord_converter(enemy['body']['data'][0]), food):
                 dead = True
         if dead:
             continue
@@ -123,7 +139,7 @@ def foodpath(data, grid, mysnake):
         # printg(grid, 'orig')
         # printg(new_grid, 'new')
 
-        # print snek['coords'][-1]
+        # print snek['body']['data'][-1]
         foodtotail = a_star(food, new_snek_coords[-1], new_grid, new_snek_coords)
         if foodtotail:
             path = tentative_path
@@ -137,8 +153,8 @@ def getpath(data):
     grid = populatesafety(data, mysnake, grid)
 
     path = None
-    snek_head = mysnake['coords'][0]
-    snek_coords = mysnake['coords']
+    snek_head = coord_converter(mysnake['body']['data'][0])
+    snek_coords = coords_converter(mysnake['body']['data'])
     middle = [data['width'] / 2, data['height'] / 2]
     # if len(data['snakes']) >= 2:
     #     if mysnake['health_points'] <= 80:

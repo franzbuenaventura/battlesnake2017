@@ -45,7 +45,7 @@ def a_star(start, goal, grid, tail):
     goal = tuple(goal)
 
     closed_set = []
-    open_set   = [start]
+    open_set = [start]
     came_from = {} #empty map
 
     g_score = [[10000 for x in xrange(len(grid[y]))] for y in xrange(len(grid))]
@@ -63,7 +63,7 @@ def a_star(start, goal, grid, tail):
         open_set.remove(current)
         closed_set.append(current)
 
-        for neighbour in neighbours(current, grid, g_score[current[0]][current[1]], tail,[1,2,5]):
+        for neighbour in neighbours(current, grid, g_score[current[0]][current[1]], tail,[1,3]):
             if neighbour in closed_set:
                 continue
             tentative_g_score = g_score[current[0]][current[1]] + dist(current,neighbour)
@@ -77,5 +77,3 @@ def a_star(start, goal, grid, tail):
             f_score[neighbour[0]][neighbour[1]] = tentative_g_score + dist(neighbour,goal)
 
     return None
-
-#print a_star((3,1),(0,1),[[0,2,0,0],[0,2,0,0],[1,2,0,0],[0,2,0,0]], [[3,1],[2,1],[1,1],[0,1]])
