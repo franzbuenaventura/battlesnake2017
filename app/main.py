@@ -8,7 +8,7 @@ SNAKE_BUFFER = 2
 SNAKE = 1
 FOOD = 2
 SAFETY = 3
-SNAKE_ID = "Ahas"
+SNAKE_ID = ""
 
 def direction(from_cell, to_cell):
     dx = to_cell[0] - from_cell[0]
@@ -57,10 +57,9 @@ def coords_converter(coords):
 # Setup Grid and map out the Snakes and Food
 # return: Snake and Grid
 def populatesnake_grid(data):
-
     grid = [[0 for col in xrange(data['height'])] for row in xrange(data['width'])]
     for snek in data['snakes']['data']:
-        if snek['name'] == SNAKE_ID:
+        if snek['id'] == SNAKE_ID:
             mysnake = snek
         for coord in snek['body']['data']:
             grid[coord_converter(coord)[0]][coord_converter(coord)[1]] = SNAKE
@@ -73,7 +72,7 @@ def populatesnake_grid(data):
 # SNAKE_BUFFER number of blocks away from enemy head to user head
 def populatesafety(data, mysnake, grid):
     for enemy in data['snakes']['data']:
-        if enemy['name'] == SNAKE_ID:
+        if enemy['id'] == SNAKE_ID:
             continue
         if distance(coord_converter(mysnake['body']['data'][0]), coord_converter(enemy['body']['data'][0])) > SNAKE_BUFFER:
             continue
@@ -108,7 +107,7 @@ def foodpath(data, grid, mysnake):
         # Avoid snakes near food
         dead = False
         for enemy in data['snakes']['data']:
-            if enemy['name'] == SNAKE_ID:
+            if enemy['id'] == SNAKE_ID:
                 continue
             if path_length > distance(coord_converter(enemy['body']['data'][0]), food):
                 dead = True
@@ -211,6 +210,8 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
+    global SNAKE_ID
+    SNAKE_ID = data['you']['id']
     path = getpath(data)
     return {
         'move': direction(path[0], path[1]),
