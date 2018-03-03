@@ -202,10 +202,10 @@ def start():
     return {
         'color': '#c0392b',
         "secondary_color": "#000000",
-        'taunt': 'pew pew',
+        'taunt': 'begone thot',
         'head_url': 'http://vignette1.wikia.nocookie.net/scribblenauts/images/5/5b/Black_Mamba.png/revision/latest?cb'
                     '=20130321192320',
-        'name': 'Black Mamba',
+        'name': 'ahas',
         "head_type": "shades",
         "tail_type": "fat-rattle"
     }
