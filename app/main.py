@@ -60,7 +60,7 @@ def populatesnake_grid(data):
 
     grid = [[0 for col in xrange(data['height'])] for row in xrange(data['width'])]
     for snek in data['snakes']['data']:
-        if snek['name'] == "ahas":
+        if snek['name'] == "Ahas":
             mysnake = snek
         for coord in snek['body']['data']:
             print (coord_converter(coord)[0])
@@ -75,7 +75,7 @@ def populatesnake_grid(data):
 # SNAKE_BUFFER number of blocks away from enemy head to user head
 def populatesafety(data, mysnake, grid):
     for enemy in data['snakes']['data']:
-        if enemy['name'] == "ahas":
+        if enemy['name'] == "Ahas":
             continue
         if distance(coord_converter(mysnake['body']['data'])[0], coord_converter(enemy['body']['data'])[0]) > SNAKE_BUFFER:
             continue
@@ -110,7 +110,7 @@ def foodpath(data, grid, mysnake):
         # Avoid snakes near food
         dead = False
         for enemy in data['snakes']['data']:
-            if enemy['name'] == "ahas":
+            if enemy['name'] == "Ahas":
                 continue
             if path_length > distance(coord_converter(enemy['body']['data'][0]), food):
                 dead = True
@@ -205,7 +205,7 @@ def start():
         'taunt': 'begone taunt',
         'head_url': 'http://vignette1.wikia.nocookie.net/scribblenauts/images/5/5b/Black_Mamba.png/revision/latest?cb'
                     '=20130321192320',
-        'name': 'ahas',
+        'name': 'Ahas',
         "head_type": "shades",
         "tail_type": "fat-rattle"
     }
