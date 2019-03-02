@@ -206,17 +206,22 @@ def start():
         "tail_type": "fat-rattle"
     }
 
-
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    global SNAKE_ID
-    SNAKE_ID = data['you']['id']
-    path = getpath(data)
     return {
+    }
+
+#@bottle.post('/move')
+#def move():
+#    data = bottle.request.json
+#    global SNAKE_ID
+#    SNAKE_ID = data['you']['id']
+#    path = getpath(data)
+#    return {
       #  'move': direction(path[0], path[1]),
       #  'taunt': 'hiss hiss, I\'m a snake'
-    }
+#    }
 
 
 
