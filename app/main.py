@@ -207,15 +207,29 @@ def start():
     }
 
 
+#@bottle.post('/move')
+#def move():
+#    data = bottle.request.json
+#    global SNAKE_ID
+#    SNAKE_ID = data['you']['id']
+#    path = getpath(data)
+#    return {
+#        'move': direction(path[0], path[1]),
+#        'taunt': 'hiss hiss, I\'m a snake'
+#    }
+
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    global SNAKE_ID
-    SNAKE_ID = data['you']['id']
-    path = getpath(data)
     return {
-        'move': direction(path[0], path[1]),
-        'taunt': 'hiss hiss, I\'m a snake'
+        'color': '#c0392b',
+        "secondary_color": "#000000",
+        'taunt': 'begone taunt',
+        'head_url': 'http://vignette1.wikia.nocookie.net/scribblenauts/images/5/5b/Black_Mamba.png/revision/latest?cb'
+                    '=20130321192320',
+        'name': 'Ahas',
+        "head_type": "shades",
+        "tail_type": "fat-rattle"
     }
 
 
