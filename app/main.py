@@ -218,7 +218,7 @@ def move():
      #   'taunt': 'hiss hiss, I\'m a snake',
     #}
   return {
-        'move': direction(0, 1),
+        'move': direction(1, 0),
         'taunt': 'hiss hiss, I\'m a snake',
     }
 
