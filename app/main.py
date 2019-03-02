@@ -209,7 +209,7 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    print(json.dumps(data))
+    #print(json.dumps(data))
     #global SNAKED_ID
     #SNAKE_ID = data['you']['id']
     #path = getpath(data)
